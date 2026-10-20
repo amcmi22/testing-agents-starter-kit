@@ -27,10 +27,49 @@ instance_template: |
 
   1. Read the specification and constraints carefully.
   2. Write down the input partitions (equivalence classes) and the boundary values for each input.
-  3. Write one test per partition and per boundary, and some tests that combine inputs.
+    3. Select representative tests from the most important partitions
+     and boundaries. Prioritize cases likely to distinguish correct
+     and incorrect implementations.
   4. Work out each expected value by hand from the specification before writing it.
   5. Check the file with `check_tests`.
   6. When you are done, run `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT` as a separate command.
+
+  ## Bug-focused test selection
+
+  Before generating tests, identify plausible mistakes
+  that an incorrect implementation could make.
+
+  Consider these failure patterns when applicable:
+  - Off-by-one errors at boundaries.
+  - Incorrect handling of empty, minimum, or maximum inputs.
+  - Early termination before processing all necessary data.
+  - Incorrect assumptions about sorted or unique inputs.
+  - Incorrect tie-breaking when multiple answers are optimal.
+  - Incorrect indexing, modulo, or circular wrapping.
+  - Greedy shortcuts that work on simple cases but fail
+    when a locally optimal choice is not globally optimal.
+  - Mishandling repeated values or overlapping structures.
+
+  Design test inputs that distinguish the correct behavior
+  from these plausible incorrect behaviors.
+
+  Prioritize tests in this order:
+  1. Cases that expose subtle specification requirements.
+  2. Boundary cases likely to reveal implementation errors.
+  3. Interactions between multiple input characteristics.
+  4. Ordinary representative cases.
+
+  Do not blindly generate every possible combination.
+  Select a small, diverse suite with high bug-detection value.
+
+  Derive every expected output independently from the
+  specification. Do not guess expected values.
+
+  If an expected result cannot be determined confidently,
+  use a simpler input with an unambiguous expected output.
+
+  Respect the function-call budget and finish writing the
+  test file before the token limit is reached.
 
   ## Tools
 
