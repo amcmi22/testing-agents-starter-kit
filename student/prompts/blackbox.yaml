@@ -26,13 +26,17 @@ instance_template: |
   ## Suggested approach
 
   1. Read the specification and constraints carefully.
-  2. Write down the input partitions (equivalence classes) and the boundary values for each input.
-    3. Select representative tests from the most important partitions
+  2. Use `eval_expr` to verify any expected values you are uncertain about
+   before writing assertions.
+  3. Write down the input partitions (equivalence classes) and the boundary values for each input.
+  4. Select representative tests from the most important partitions
      and boundaries. Prioritize cases likely to distinguish correct
      and incorrect implementations.
-  4. Work out each expected value by hand from the specification before writing it.
-  5. Check the file with `check_tests`.
-  6. When you are done, run `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT` as a separate command.
+  5. Work out each expected value by hand from the specification before writing it.
+  6. Check the file with `check_tests`.
+  7. When you are done, run `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT` as a separate command.
+
+
 
   ## Bug-focused test selection
 
@@ -81,11 +85,14 @@ instance_template: |
   1. Identify the specific requirement being tested.
   2. Work through the input step by step to calculate the
      expected output.
-  3. Check whether the result depends on special rules,
+  3. If you are unsure of an expected value, use `eval_expr`
+     to compute it directly rather than relying on
+     hand-calculation.
+  4. Check whether the result depends on special rules,
      including ordering, tie-breaking, indexing, or boundaries.
-  4. Verify that the expected output satisfies all relevant
+  5. Verify that the expected output satisfies all relevant
      conditions in the specification.
-  5. Only write the assertion when the expected output is
+  6. Only write the assertion when the expected output is
      sufficiently certain.
 
   When evaluating optimization problems:

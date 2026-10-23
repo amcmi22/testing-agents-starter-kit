@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""
+eval_expr - Safely evaluate a Python arithmetic expression and print the result.
+
+Usage: eval_expr "<expression>"
+
+Use this to verify expected output values before writing test assertions.
+Supports arithmetic, modulo, min/max, abs, list comprehensions, and indexing.
+
+Examples:
+  eval_expr "(7 - 3) % 5"
+  eval_expr "min(3, 7) + 2"
+  eval_expr "[i % 4 for i in range(6)]"
+  eval_expr "sorted([3,1,2])"
+"""
+import sys
+import ast
+
+SAFE_NAMES = {
+    "abs": abs, "min": min, "max": max, "len": len,
+    "range": range, "sum": sum, "sorted": sorted,
+    "list": list, "tuple": tuple, "round": round,
+    "True": True, "False": False, "None": None,
+}
+
+def safe_eval(expr):
+    try:
+        tree = ast.parse(expr, mode='eval')
+    except SyntaxError as e:
+        print(f"Syntax error: {e}")
+        sys.exit(1)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name):
+                if node.func.id not in SAFE_NAMES:
+                    print(f"Error: function '{node.func.id}' is not allowed.")
+                    sys.exit(1)
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            print("Error: imports are not allowed.")
+            sys.exit(1)
+    try:
+        result = eval(compile(tree, "<expr>", "eval"), {"__builtins__": {}}, SAFE_NAMES)
+        print(result)
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+def main():
+    if "--help" in sys.argv or len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit(0)
+    expr = " ".join(sys.argv[1:])
+    safe_eval(expr)
+
+if __name__ == "__main__":
+    main()
