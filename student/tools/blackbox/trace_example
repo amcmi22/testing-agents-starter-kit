@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+"""
+trace_example - Walk through the worked examples in SPEC.md to verify expected outputs.
+
+Usage: trace_example [--help]
+
+Reads SPEC.md from the current directory and extracts all input/output examples
+shown in the problem statement. Prints them in a numbered, structured format so
+you can verify your hand-calculated expected values against the spec examples
+before writing test assertions.
+
+This helps avoid writing tests with wrong expected outputs.
+"""
+import sys
+import re
+
+def extract_examples(spec_text):
+    """Extract input/output examples from spec markdown."""
+    examples = []
+    
+    # Pattern 1: Example blocks like:
+    # Example 1:
+    # Input: ...
+    # Output: ...
+    pattern1 = re.finditer(
+        r'(?:example|test case)\s*\d*\s*:?\s*\n'
+        r'(?:.*?input\s*:?\s*(.+?)\n)?'
+        r'.*?output\s*:?\s*(.+?)(?:\n|$)',
+        spec_text, re.IGNORECASE | re.DOTALL
+    )
+    for m in pattern1:
+        inp = m.group(1)
+        out = m.group(2)
+        if inp and out:
+            examples.append(("Example", inp.strip(), out.strip()))
+    
+    # Pattern 2: Function call style  e.g.  func([1,2,3]) -> 6
+    pattern2 = re.finditer(
+        r'(\w+\s*\([^)]+\))\s*(?:->|=>|returns?|=)\s*([^\n,;]+)',
+        spec_text
+    )
+    for m in pattern2:
+        call = m.group(1).strip()
+        result = m.group(2).strip()
+        examples.append(("Call", call, result))
+    
+    # Pattern 3: Table rows like | input | output |
+    table_rows = re.finditer(
+        r'\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|',
+        spec_text
+    )
+    for m in table_rows:
+        a, b = m.group(1).strip(), m.group(2).strip()
+        # Skip header rows
+        if a.lower() in ('input', 'inputs', 'args', 'parameters', '-', '--'):
+            continue
+        if b.lower() in ('output', 'result', 'return', '-', '--'):
+            continue
+        if re.search(r'\d|"|\[', a):  # looks like actual data
+            examples.append(("Table", a, b))
+    
+    return examples
+
+def main():
+    if "--help" in sys.argv:
+        print(__doc__)
+        sys.exit(0)
+    
+    try:
+        with open("SPEC.md") as f:
+            spec = f.read()
+    except FileNotFoundError:
+        print("Error: SPEC.md not found in current directory.")
+        sys.exit(1)
+    
+    examples = extract_examples(spec)
+    
+    if not examples:
+        print("No input/output examples found in SPEC.md.")
+        print("Tip: Look for lines like 'Example:', 'Input:', 'Output:' or")
+        print("     function calls like f(x) -> result in the spec.")
+        sys.exit(0)
+    
+    print(f"Found {len(examples)} example(s) in the spec:\n")
+    seen = set()
+    count = 0
+    for kind, inp, out in examples:
+        key = (inp, out)
+        if key in seen:
+            continue
+        seen.add(key)
+        count += 1
+        print(f"[{count}] {kind}")
+        print(f"    Input  : {inp}")
+        print(f"    Expected: {out}")
+        print()
+    
+    print("Use these as ground truth when writing test assertions.")
+    print("If your calculated expected value differs from these, trust the spec.")
+
+if __name__ == "__main__":
+    main()
