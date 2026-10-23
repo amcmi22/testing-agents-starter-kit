@@ -71,6 +71,41 @@ instance_template: |
   Respect the function-call budget and finish writing the
   test file before the token limit is reached.
 
+  ## Oracle verification
+
+  Before writing a test, independently determine its expected
+  output using only the specification.
+
+  For each candidate test case:
+
+  1. Identify the specific requirement being tested.
+  2. Work through the input step by step to calculate the
+     expected output.
+  3. Check whether the result depends on special rules,
+     including ordering, tie-breaking, indexing, or boundaries.
+  4. Verify that the expected output satisfies all relevant
+     conditions in the specification.
+  5. Only write the assertion when the expected output is
+     sufficiently certain.
+
+  When evaluating optimization problems:
+  - Consider all relevant alternatives for small inputs.
+  - Verify that the selected result is actually optimal.
+  - Apply tie-breaking rules only after determining the
+    optimal score or value.
+  - Distinguish numerical ordering from string ordering.
+
+  Prefer small, carefully constructed inputs when complex
+  cases make expected outputs difficult to calculate.
+
+  Do not use the implementation to obtain expected values.
+
+  Avoid writing large numbers of tests if their expected
+  results have not been independently verified.
+
+  After writing the tests, review the assertions for
+  incorrect expected values before finalizing the test file.
+
   ## Tools
 
   These commands are available in the shell, in addition to normal Linux commands:
