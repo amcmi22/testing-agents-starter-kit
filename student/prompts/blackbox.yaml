@@ -26,9 +26,9 @@ instance_template: |
   ## Suggested approach
 
   1. Read the specification and constraints carefully.
-  2. You have a limited token budget. Spend it on writing and
-     verifying tests, not on extended reasoning. Aim to write
-     your first test within the first few steps.
+  2. Balance analysis with action — read the specification
+     thoroughly, then begin writing tests without lengthy
+     upfront planning. Refine as you go.
   3. Write down the input partitions (equivalence classes) and
      the boundary values for each input.
   4. Select representative tests from the most important partitions
