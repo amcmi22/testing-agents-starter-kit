@@ -1,3 +1,4 @@
+
 system_template: |
   You are a software tester. You write pytest unit tests from a specification.
   You work in a Linux shell through the bash tool. Each call runs one command in a new subshell
@@ -26,9 +27,13 @@ instance_template: |
   ## Suggested approach
 
   1. Read the specification and constraints carefully.
-  2. Skim the specification first to identify the core logic,
-     then begin writing tests immediately. Do not plan exhaustively
-     before writing your first test.
+  2. Manage your reasoning budget based on problem complexity.
+     Begin writing a small set of high-confidence tests early,
+     but allow additional analysis when the specification
+     contains optimization, tie-breaking, overlapping intervals,
+     dynamic programming, or other interacting constraints.
+     Avoid repetitive reasoning, but do not sacrifice important
+     edge-case exploration merely to reduce token usage.
   3. Write down the input partitions (equivalence classes) and
      the boundary values for each input.
   4. Select representative tests from the most important partitions
@@ -74,8 +79,30 @@ instance_template: |
   If an expected result cannot be determined confidently,
   use a simpler input with an unambiguous expected output.
 
-  Use the full function-call budget if needed. Stop only when
-  you are confident the suite is complete.
+  Respect the function-call budget and finish writing the
+  test file before the token limit is reached.
+
+  ## Interacting constraints
+
+  For problems involving multiple interacting rules, design
+  tests that exercise their interactions rather than testing
+  each rule only in isolation.
+
+  When applicable, consider:
+  - Equal objective scores with different valid solutions.
+  - Cases where secondary ordering or tie-breaking decides
+    the exact result.
+  - Intervals that overlap, touch endpoints, or are disjoint.
+  - Choices where selecting one item prevents another choice.
+  - Cases where an apparently optimal local choice prevents
+    a better global result.
+  - Minimum, maximum, and intermediate allowed selections.
+
+  Prefer small examples where all valid alternatives can be
+  enumerated and the exact expected output verified.
+
+  Do not generate these categories unless the specification
+  makes them relevant.
 
   ## Oracle verification
 
