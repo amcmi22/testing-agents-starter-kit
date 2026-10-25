@@ -34,14 +34,11 @@ instance_template: |
   4. Select representative tests from the most important partitions
      and boundaries. Prioritize cases likely to distinguish correct
      and incorrect implementations.
-   5. Work out each expected value by hand from the specification
+  5. Work out each expected value by hand from the specification
      before writing it. Keep each test short and self-contained —
-     minimal setup, one assertion per logical requirement. Use the
-     smallest input that clearly exercises the requirement.
+     minimal setup, one assertion per logical requirement.
   6. Check the file with `check_tests`.
   7. When you are done, run `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT` as a separate command.
-
-
 
   ## Bug-focused test selection
 
@@ -62,11 +59,11 @@ instance_template: |
   Design test inputs that distinguish the correct behavior
   from these plausible incorrect behaviors.
 
-   Prioritize tests in this order:
-  1. Ordinary representative cases that confirm basic behaviour.
+  Prioritize tests in this order:
+  1. Cases that expose subtle specification requirements.
   2. Boundary cases likely to reveal implementation errors.
-  3. Cases that expose subtle specification requirements.
-  4. Interactions between multiple input characteristics.
+  3. Interactions between multiple input characteristics.
+  4. Ordinary representative cases.
 
   Do not blindly generate every possible combination.
   Select a small, diverse suite with high bug-detection value.
@@ -80,7 +77,7 @@ instance_template: |
   Respect the function-call budget and finish writing the
   test file before the token limit is reached.
 
-    ## Oracle verification
+  ## Oracle verification
 
   Before writing a test, independently determine its expected
   output using only the specification.
