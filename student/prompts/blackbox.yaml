@@ -26,17 +26,18 @@ instance_template: |
   ## Suggested approach
 
   1. Read the specification and constraints carefully.
-  2. Balance analysis with action — read the specification
-     thoroughly, then begin writing tests without lengthy
-     upfront planning. Refine as you go.
+  2. You have a limited token budget. Spend it on writing and
+     verifying tests, not on extended reasoning. Aim to write
+     your first test within the first few steps.
   3. Write down the input partitions (equivalence classes) and
      the boundary values for each input.
   4. Select representative tests from the most important partitions
      and boundaries. Prioritize cases likely to distinguish correct
      and incorrect implementations.
-  5. Work out each expected value by hand from the specification
+   5. Work out each expected value by hand from the specification
      before writing it. Keep each test short and self-contained —
-     minimal setup, one assertion per logical requirement.
+     minimal setup, one assertion per logical requirement. Use the
+     smallest input that clearly exercises the requirement.
   6. Check the file with `check_tests`.
   7. When you are done, run `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT` as a separate command.
 
@@ -61,11 +62,11 @@ instance_template: |
   Design test inputs that distinguish the correct behavior
   from these plausible incorrect behaviors.
 
-  Prioritize tests in this order:
-  1. Cases that expose subtle specification requirements.
+   Prioritize tests in this order:
+  1. Ordinary representative cases that confirm basic behaviour.
   2. Boundary cases likely to reveal implementation errors.
-  3. Interactions between multiple input characteristics.
-  4. Ordinary representative cases.
+  3. Cases that expose subtle specification requirements.
+  4. Interactions between multiple input characteristics.
 
   Do not blindly generate every possible combination.
   Select a small, diverse suite with high bug-detection value.
