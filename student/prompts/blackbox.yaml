@@ -26,9 +26,9 @@ instance_template: |
   ## Suggested approach
 
   1. Read the specification and constraints carefully.
-  2. You have a limited token budget. Spend it on writing and
-     verifying tests, not on extended reasoning. Aim to write
-     your first test within the first few steps.
+  2. Skim the specification first to identify the core logic,
+     then begin writing tests immediately. Do not plan exhaustively
+     before writing your first test.
   3. Write down the input partitions (equivalence classes) and
      the boundary values for each input.
   4. Select representative tests from the most important partitions
@@ -74,8 +74,8 @@ instance_template: |
   If an expected result cannot be determined confidently,
   use a simpler input with an unambiguous expected output.
 
-  Respect the function-call budget and finish writing the
-  test file before the token limit is reached.
+  Use the full function-call budget if needed. Stop only when
+  you are confident the suite is complete.
 
   ## Oracle verification
 
